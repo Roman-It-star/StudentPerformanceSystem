@@ -1,0 +1,81 @@
+﻿@model StudentPerformanceSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Информация о студенте";
+}
+
+<h1>Информация о студенте</h1>
+
+<div>
+    <h4>@Model.FullName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StudentId
+        </dd>
+        <dt class="col-sm-2">
+            Имя
+        </dt>
+        <dd class="col-sm-10">
+            @Model.FirstName
+        </dd>
+        <dt class="col-sm-2">
+            Фамилия
+        </dt>
+        <dd class="col-sm-10">
+            @Model.LastName
+        </dd>
+        <dt class="col-sm-2">
+            Группа
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Group
+        </dd>
+        <dt class="col-sm-2">
+            Дата рождения
+        </dt>
+        <dd class="col-sm-10">
+            @Model.BirthDate.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            Общий балл
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Scores.Sum(s => s.Points)
+        </dd>
+    </dl>
+</div>
+
+<h4>Оценки</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Предмет</th>
+            <th>Баллы</th>
+            <th>Дата</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var score in Model.Scores)
+        {
+            <tr>
+                <td>@score.Subject.Name</td>
+                <td>@score.Points</td>
+                <td>@score.Date.ToShortDateString()</td>
+                <td>
+                    <a asp-controller="Scores" asp-action="Edit" asp-route-id="@score.ScoreId" class="btn btn-secondary">Редактировать</a>
+                    <a asp-controller="Scores" asp-action="Delete" asp-route-id="@score.ScoreId" class="btn btn-danger">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="Scores" asp-action="Create" asp-route-studentId="@Model.StudentId" class="btn btn-primary">Добавить оценку</a>
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+</div>

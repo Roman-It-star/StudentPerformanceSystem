@@ -1,0 +1,42 @@
+﻿@model IEnumerable<StudentPerformanceSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Список студентов";
+}
+
+<h1>Список студентов</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Добавить нового студента</a>
+    <a asp-action="TopStudents" class="btn btn-success">Топ 5 студентов</a>
+    <a asp-action="WorstStudents" class="btn btn-warning">Худшие 5 студентов</a>
+    <a asp-action="ExportToFile" class="btn btn-info">Экспорт в файл</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Группа</th>
+            <th>Дата рождения</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentId</td>
+                <td>@item.FullName</td>
+                <td>@item.Group</td>
+                <td>@item.BirthDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-info">Подробности</a>
+                    <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-secondary">Редактировать</a>
+                    <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-danger">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

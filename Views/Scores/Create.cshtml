@@ -1,0 +1,66 @@
+﻿@model StudentPerformanceSystem.Models.Score
+@{
+    ViewData["Title"] = "Добавление оценки";
+
+    // Безопасное получение данных из ViewData
+    var subjects = ViewData["Subjects"] as List<Subject> ?? new List<Subject>();
+    var studentName = ViewData["StudentName"] as string ?? "Неизвестный студент";
+}
+
+<h1>Добавление оценки</h1>
+<h4>Для студента: @studentName</h4>
+<hr />
+
+@if (!subjects.Any())
+{
+    <div class="alert alert-danger">
+        Нет доступных предметов для добавления оценки
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="form-group">
+                    <label asp-for="SubjectId" class="control-label">Предмет</label>
+                    <select asp-for="SubjectId" class="form-control">
+                        @foreach (var subject in subjects)
+                        {
+                            <option value="@subject.SubjectId">@subject.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="SubjectId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Points" class="control-label">Баллы</label>
+                    <input asp-for="Points" class="form-control" />
+                    <span asp-validation-for="Points" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Date" class="control-label">Дата</label>
+                    <input asp-for="Date" type="date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Добавить" class="btn btn-primary" />
+                    <a asp-controller="Students" asp-action="Details" asp-route-id="@Model.StudentId"
+                       class="btn btn-secondary">Назад к студенту</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

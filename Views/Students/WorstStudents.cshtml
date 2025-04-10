@@ -1,0 +1,32 @@
+﻿@model IEnumerable<StudentPerformanceSystem.Models.Student>
+
+@{
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() == "TopStudents"
+        ? "Топ 5 студентов" : "Худшие 5 студентов";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Группа</th>
+            <th>Общий балл</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentId</td>
+                <td>@item.FullName</td>
+                <td>@item.Group</td>
+                <td>@item.Scores.Sum(s => s.Points)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Назад к списку</a>

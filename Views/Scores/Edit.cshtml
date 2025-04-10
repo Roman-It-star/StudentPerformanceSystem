@@ -1,0 +1,44 @@
+﻿@model StudentPerformanceSystem.Models.Score
+
+@{
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() == "Create"
+        ? "Добавить оценку" : "Редактировать оценку";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="@ViewContext.RouteData.Values["action"].ToString()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ScoreId" />
+            <input type="hidden" asp-for="StudentId" />
+
+            <div class="form-group">
+                <label asp-for="SubjectId" class="control-label">Предмет</label>
+                <select asp-for="SubjectId" class="form-control" asp-items="@(new SelectList(ViewBag.Subjects, "SubjectId", "Name"))">
+                    <option value="">-- Выберите предмет --</option>
+                </select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Points" class="control-label">Баллы</label>
+                <input asp-for="Points" class="form-control" />
+                <span asp-validation-for="Points" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">Дата</label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Students" asp-action="Details" asp-route-id="@Model.StudentId">Назад к студенту</a>
+</div>
