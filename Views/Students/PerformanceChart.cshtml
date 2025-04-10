@@ -1,0 +1,62 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "График успеваемости";
+    var studentId = ViewContext.RouteData.Values["id"];
+}
+
+<h1>График успеваемости</h1>
+
+<div class="row">
+    @foreach (var subject in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>@subject.Subject</h5>
+                    <p>Средний балл: @subject.AverageScore.ToString("0.00")</p>
+                </div>
+                <div class="card-body">
+                    <canvas id="chart-@subject.Subject" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<a asp-action="Details" asp-route-id="@studentId" class="btn btn-secondary">Назад</a>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        @foreach (var subject in Model)
+        {
+            <text>
+                    var ctx = document.getElementById('chart-@subject.Subject').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: @Html.Raw(Json.Serialize(subject.Dates)),
+                            datasets: [{
+                                label: 'Баллы по предмету @subject.Subject',
+                                data: @Html.Raw(Json.Serialize(subject.Scores)),
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+            </text>
+        }
+        });
+    </script>
+}
