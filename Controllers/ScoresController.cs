@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPerformanceSystem.Models;
 
 namespace StudentPerformanceSystem.Controllers
 {
+    [Authorize(Roles = "Admin,Teacher")]
     public class ScoresController : Controller
     {
         private readonly AppDbContext _context;
